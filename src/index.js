@@ -1,8 +1,4 @@
-import 'slim-select/dist/slimselect.min.css';
-import SlimSelect from 'slim-select';
-import 'cssloaders/css/late.css'; // Підключте CSS-файл для завантажувача
-
-import { fetchBreeds, fetchCatByBreed } from './cat-api';
+import { fetchBreeds, fetchCatByBreed } from './js/cat-api';
 
 document.addEventListener('DOMContentLoaded', () => {
   const breedSelect = new SlimSelect({
