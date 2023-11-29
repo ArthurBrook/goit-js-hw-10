@@ -1,57 +1,54 @@
-import { fetchBreeds, fetchCatByBreed } from './js/cat-api';
+import { fetchBreeds } from './cat-api';
+import SlimSelect from 'slim-select';
+import { fetchCatByBreed } from './cat-api';
+import axios from 'axios';
+import Notiflix from 'notiflix';
 
-document.addEventListener('DOMContentLoaded', () => {
-  const breedSelect = new SlimSelect({
-    select: '#breedSelect',
-    placeholder: 'Select a breed',
-    onChange: info => {
-      const breedId = info.value();
-      if (breedId) {
-        displayLoader(true);
-        fetchCatInfo(breedId);
-      }
-    },
-  });
+const refs = {
+  selecter: document.querySelector('.breed-select'),
+  loader: document.querySelector('.loader'),
+  error: document.querySelector('.error'),
+  catInfo: document.querySelector('.cat-info'),
+};
 
-  // Fetch and populate breeds
-  fetchBreeds().then(breeds => {
-    breedSelect.setData(
-      breeds.map(breed => ({ text: breed.name, value: breed.id }))
+refs.loader.style.display = 'block';
+fetchBreeds()
+  .then(data => {
+    refs.selecter.innerHTML = data;
+    refs.loader.style.display = 'none';
+
+    refs.selecter.style.display = 'block';
+    new SlimSelect({
+      select: `#refs.selecter`,
+    });
+  })
+  .catch(err => {
+    console.log(err);
+    Notiflix.Notify.failure(
+      'Oops! Something went wrong! Try reloading the page!'
     );
-    displayLoader(false);
+    refs.loader.style.display = 'none';
   });
 
-  function fetchCatInfo(breedId) {
-    fetchCatByBreed(breedId)
-      .then(cat => {
-        displayLoader(false);
-        displayCatInfo(cat);
-      })
-      .catch(error => {
-        displayLoader(false);
-        displayError();
-      });
-  }
+refs.selecter.addEventListener('change', selecterEvent);
 
-  function displayCatInfo(cat) {
-    const catImage = document.querySelector('.cat-image');
-    const breedName = document.querySelector('.breed-name');
-    const description = document.querySelector('.description');
-    const temperament = document.querySelector('.temperament');
+function selecterEvent(event) {
+  refs.catInfo.style.display = 'none';
+  refs.loader.style.display = 'block';
 
-    catImage.src = cat.url;
-    breedName.textContent = `Breed: ${cat.breeds[0].name}`;
-    description.textContent = `Description: ${cat.breeds[0].description}`;
-    temperament.textContent = `Temperament: ${cat.breeds[0].temperament}`;
+  const selectedValue = event.target.value;
 
-    document.querySelector('.cat-info').style.display = 'block';
-  }
-
-  function displayLoader(show) {
-    document.querySelector('.loader').style.display = show ? 'block' : 'none';
-  }
-
-  function displayError() {
-    document.querySelector('.error').style.display = 'block';
-  }
-});
+  fetchCatByBreed(selectedValue)
+    .then(data => {
+      refs.loader.style.display = 'none';
+      refs.catInfo.innerHTML = data;
+      refs.catInfo.style.display = 'flex';
+    })
+    .catch(err => {
+      Notiflix.Notify.failure(
+        'Oops! Something went wrong! Try reloading the page!'
+      );
+      refs.loader.style.display = 'none';
+      console.log(err);
+    });
+}

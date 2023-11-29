@@ -3,32 +3,17 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="stylesheet" href="./style.css">
     <title>Котопошук</title>
-    <link rel="stylesheet" href="./sass/index.scss" />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/slim-select/dist/slimselect.min.css"
-    />
-    <link rel="stylesheet" href="https://cssloaders.github.io/css/late.css" />
   </head>
   <body>
-    <div class="container">
-      <h1>Котопошук</h1>
-      <div class="loader">Loading...</div>
-      <div class="error">Error loading data. Please try again.</div>
-      <div class="breed-select-container">
-        <label for="breedSelect">Select Breed:</label>
-        <select id="breedSelect" class="breed-select"></select>
-      </div>
-      <div class="cat-info">
-        <img src="" alt="Cat Image" class="cat-image" />
-        <div class="cat-details">
-          <h2 class="breed-name"></h2>
-          <p class="description"></p>
-          <p class="temperament"></p>
-        </div>
-      </div>
-    </div>
-    <script src="index.js"></script>
+
+    <select id="single" class="breed-select"></select>
+    <p class="loader"></p>
+    <p class="error">Oops! Something went wrong! Try reloading the page!</p>
+    <div class="cat-info"></div>
+
+    </script>
+    <script src="index.js" type="module"></script>
   </body>
 </html>
