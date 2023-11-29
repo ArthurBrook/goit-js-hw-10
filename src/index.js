@@ -11,16 +11,18 @@ const refs = {
   catInfo: document.querySelector('.cat-info'),
 };
 
+
 refs.loader.style.display = 'block';
 fetchBreeds()
   .then(data => {
     refs.selecter.innerHTML = data;
     refs.loader.style.display = 'none';
-
-    refs.selecter.style.display = 'block';
-    new SlimSelect({
-      select: `#refs.selecter`,
-    });
+  
+     refs.selecter.style.display = 'block';
+      new SlimSelect({
+        select: `#refs.selecter`,
+      });
+   
   })
   .catch(err => {
     console.log(err);
